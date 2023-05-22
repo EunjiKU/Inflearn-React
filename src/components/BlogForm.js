@@ -1,28 +1,53 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
-// import { useHistory } from 'react-router';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 
-const BlogForm = () => {
+const BlogForm = ({ editing }) => {
   const history = useHistory();
+  const { id } = useParams();
 
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
-  const onSubmit = () => {
-    axios.post("http://localhost:3001/posts", {
-      title: title,
-      body: body,
-    })
-      .then(() => {
-        history.push("/blogs");
+
+  useEffect(() => {
+    axios.get(`http://localhost:3001/posts/${id}`)
+      .then((response) => {
+        setTitle(response.data.title);
+        setBody(response.data.body);
       })
-      .catch(error => console.log(error));
+      .catch(error => console.log(error))
+  }, [id]);
+
+  const onSubmit = () => {
+    if(editing) {
+      axios.patch(`http://localhost:3001/posts/${id}`, {
+        title: title,
+        body: body,
+        createdAt: Date.now()
+      })
+      .then((response) => {
+          history.push("/blogs");
+        })
+        .catch(error => console.log(error));
+    } else {
+      axios.post("http://localhost:3001/posts", {
+        title: title,
+        body: body,
+        createdAt: Date.now()
+      })
+        .then(() => {
+          history.push("/blogs");
+        })
+        .catch(error => console.log(error));
+    }
   }
 
   return (
     <div>
-      <h1>Create a blog post</h1>
+      <h1>{editing ? 'Edit' : 'Create'} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>
         <input
@@ -41,15 +66,21 @@ const BlogForm = () => {
           onChange={(e) => {
             setBody(e.target.value);
           }}
-          // rows="20"
         />
       </div>
       <button
         className='btn btn-primary'
         onClick={onSubmit}
-      >Post</button>
+      >{editing ? 'Edit' : 'Post'}</button>
     </div>
   )
+}
+
+BlogForm.propTypes  = {
+  editing: PropTypes.bool
+}
+BlogForm.defaultProps   = {
+  editing: false
 }
 
 export default BlogForm;

@@ -50,7 +50,7 @@ const ListPage = () => {
           <Card
             key={post.id}
             title={post.title}
-            onclickss={() => {history.push('/blogs/edit')}}
+            onclickss={() => {history.push(`/blogs/${post.id}`)}}
           >
             <div>
               <button

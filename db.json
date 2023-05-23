@@ -1,16 +1,53 @@
 {
   "posts": [
     {
-      "title": "첫번째 제목 수정",
-      "body": "첫번째 내용 수정",
-      "createdAt": 1684749346433,
+      "title": "1",
+      "body": "1",
+      "createdAt": 1684831639035,
+      "publish": true,
       "id": 1
     },
     {
-      "title": "두번째 제목",
-      "body": "두번째 내용",
-      "createdAt": 1684749458176,
+      "title": "2",
+      "body": "2",
+      "createdAt": 1684831641201,
+      "publish": true,
       "id": 2
+    },
+    {
+      "title": "3",
+      "body": "3",
+      "createdAt": 1684831643132,
+      "publish": false,
+      "id": 3
+    },
+    {
+      "title": "4",
+      "body": "4",
+      "createdAt": 1684831645840,
+      "publish": true,
+      "id": 4
+    },
+    {
+      "title": "5",
+      "body": "5",
+      "createdAt": 1684831648683,
+      "publish": true,
+      "id": 5
+    },
+    {
+      "title": "6",
+      "body": "6",
+      "createdAt": 1684831650733,
+      "publish": false,
+      "id": 6
+    },
+    {
+      "title": "7",
+      "body": "7",
+      "createdAt": 1684831653037,
+      "publish": true,
+      "id": 7
     }
   ]
 }

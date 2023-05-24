@@ -16,16 +16,14 @@ const Pagination = ({ currentPage, numberOfPage, onClickEmit, limit }) => {
   return (
     <nav aria-label="Page navigation example">
       <ul className="pagination justify-content-center">
-        {cuurentSet !==1 && <li className="page-item disabled">
+        {cuurentSet !== 1 && <li className="page-item">
           <div
             className="page-link cursor-pointer"
-            onClick={() => {
-              console.log(startPage - limit);
-              onClickEmit(startPage - limit)
-            }}
+            onClick={() => onClickEmit(startPage - limit)}
           >Previous</div>
         </li>}
-        {Array(numberOfPageForSet).fill(startPage).map((value, index) => value + index)
+        {Array(numberOfPageForSet).fill(startPage)
+          .map((value, index) => value + index)
           .map((pageNumber) => {
             return (
               <li
@@ -44,10 +42,7 @@ const Pagination = ({ currentPage, numberOfPage, onClickEmit, limit }) => {
         {cuurentSet !== lastSet && <li className="page-item">
           <div
             className="page-link cursor-pointer"
-            onClick={() => {
-              console.log(startPage + limit);
-              onClickEmit(startPage + limit)
-            }}
+            onClick={() => onClickEmit(startPage + limit)}
           >Next</div>
         </li>}
       </ul>

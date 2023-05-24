@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { useState, useEffect } from 'react';
 import Card from "../components/Card";
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import LoadingSpinner from "../components/LoadingSpinner";
 import PropTypes from 'prop-types';
 import Pagination from './Pagination';
@@ -10,11 +10,23 @@ const BlogList = ({ isAdmin }) => {
   const history = useHistory();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [numberOfPost, setNumberOfPost] = useState(0);
+  const [numberOfPages, setNumberOfPages] = useState(0);
+  // ❗❗❗❗❗
+  // const limit = 5;
+  const limit = 1;
 
-  const getPosts = (page = 1) => {
+  useEffect(() => {
+    setNumberOfPages(Math.ceil(numberOfPost/limit));
+  }, [numberOfPost]);
+
+  const getPosts = (page) => {
+    setCurrentPage(page);
+
     let params = {
       _page: page,
-      _limit: 5,
+      _limit: limit,
       _sort: "id",
       _order: "desc",
       // publish: true,
@@ -28,6 +40,7 @@ const BlogList = ({ isAdmin }) => {
       params: params
     })
       .then((response) => {
+        setNumberOfPost(response.headers['x-total-count']);
         setPosts(response.data);
         setLoading(false);
       })
@@ -78,7 +91,11 @@ const BlogList = ({ isAdmin }) => {
   return (
     <div>
       {renderBlogList()}
-      <Pagination currentPage={3} numberOfPage={5} />
+      {numberOfPages > 1 && <Pagination
+        currentPage={currentPage}
+        numberOfPage={numberOfPages}
+        onClickEmit={getPosts}
+      />}
     </div>
   )
 }

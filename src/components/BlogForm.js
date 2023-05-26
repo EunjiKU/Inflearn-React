@@ -1,13 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { v4 as uuidv4 } from 'uuid';
-import Toast from './Toast';
-import { deleteToast } from '../helper';
 
-
-const BlogForm = ({ editing }) => {
+const BlogForm = ({ editing, addToast }) => {
   const history = useHistory();
   const { id } = useParams();
 
@@ -19,9 +15,6 @@ const BlogForm = ({ editing }) => {
   const [originPublish, setOriginPublish] = useState('');
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
-  // const [toasts, setToasts] = useState([]);
-  const [, setToastRerender] = useState(false);
-  const toasts = useRef([]);
 
   useEffect(() => {
     if(editing) {
@@ -67,29 +60,6 @@ const BlogForm = ({ editing }) => {
     return validated;
   }
 
-  // const deleteToast = (id) => {
-  //   const filteredToasts = toasts.current.filter((toast) => {
-  //     return toast.id !== id;
-  //   })
-  //   toasts.current = filteredToasts;
-  //   setToastRerender(prev => !prev);
-  // }
-
-  const addToast = (toast) => {
-    const id = uuidv4();
-    const toastWidthId = {
-      ...toast,
-      id
-    }
-    toasts.current = [...toasts.current, toastWidthId]
-    console.log(toasts.current);
-    setToastRerender(prev => !prev);
-    setTimeout(() => {
-      // deleteToast(id);
-      deleteToast(id, toasts, setToastRerender);
-    }, 5000);
-  }
-
   const onSubmit = () => {
     setTitleError(false);
     setBodyError(false);
@@ -130,11 +100,6 @@ const BlogForm = ({ editing }) => {
 
   return (
     <div>
-      <Toast
-        toasts={toasts.current}
-        // deleteToast={deleteToast}
-        deleteToast={(id) => deleteToast(id, toasts, setToastRerender)}
-      />
       <h1>{editing ? 'Edit' : 'Create'} a blog post</h1>
       <div className="mb-3">
         <label className="form-label">Title</label>

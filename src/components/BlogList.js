@@ -5,9 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import LoadingSpinner from "../components/LoadingSpinner";
 import PropTypes from 'prop-types';
 import Pagination from './Pagination';
-import Toast from './Toast';
 import useToast from '../hooks/toast';
-import { useSelector } from 'react-redux';
 
 const BlogList = ({ isAdmin }) => {
   const history = useHistory();
@@ -20,12 +18,9 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPost, setNumberOfPost] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [searchText, setSearchText] = useState();
-  const toasts1 = useSelector((state) => {
-    return state.toast.toasts
-  });
-  console.log(toasts1);
 
-  const [toasts, addToast, deleteToast] = useToast();
+  // const [addToast] = useToast();
+  const { addToast } = useToast();
   const limit = 5;
 
   useEffect(() => {
@@ -115,10 +110,6 @@ const BlogList = ({ isAdmin }) => {
 
   return (
     <div>
-      <Toast
-        toasts={toasts}
-        deleteToast={deleteToast}
-      />
       <input
         type="text"
         value={searchText}

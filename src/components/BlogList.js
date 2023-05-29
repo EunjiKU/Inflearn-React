@@ -19,7 +19,6 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [searchText, setSearchText] = useState();
 
-  // const [addToast] = useToast();
   const { addToast } = useToast();
   const limit = 5;
 

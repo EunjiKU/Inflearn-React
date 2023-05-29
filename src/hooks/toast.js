@@ -1,4 +1,3 @@
-// import React, { useState, useRef } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { addToast as add, removeToast } from '../store/toastSlice';
 import { useDispatch } from 'react-redux';

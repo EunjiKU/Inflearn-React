@@ -8,10 +8,10 @@ import routes from './routes';
 import Toast from "./components/Toast";
 import useToast from './hooks/toast';
 import { useSelector } from 'react-redux';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   const toasts = useSelector(state => state.toast.toasts);
-  // const [addToast, deleteToast] = useToast();
   const { deleteToast } = useToast();
   return (
     <Router>
@@ -23,11 +23,19 @@ function App() {
       <div className='container mt-3'>
         <Switch>
           {routes.map((route) => {
+            if(route.auth) {
+              return <ProtectedRoute
+                key={route.path}
+                exact
+                path={route.path}
+                component={route.component}
+              />
+            }
             return <Route
               key={route.path}
               exact
               path={route.path}
-              component={route.cmponent}
+              component={route.component}
             />
           })}
         </Switch>

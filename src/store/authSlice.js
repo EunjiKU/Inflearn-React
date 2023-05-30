@@ -13,6 +13,7 @@ const authSlice = createSlice({
       state.isLoggedIn = true;
     },
     logout: (state) => {
+      localStorage.removeItem('isLoggedIn');
       state.isLoggedIn = false;
     }
   }

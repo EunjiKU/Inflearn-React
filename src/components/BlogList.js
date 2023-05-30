@@ -18,6 +18,7 @@ const BlogList = ({ isAdmin }) => {
   const [numberOfPost, setNumberOfPost] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
   const [searchText, setSearchText] = useState();
+  const [error, setError] = useState('');
 
   const { addToast } = useToast();
   const limit = 5;
@@ -53,7 +54,15 @@ const BlogList = ({ isAdmin }) => {
         setPosts(response.data);
         setLoading(false);
       })
-      .catch(error => {console.log(error);})
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+        setError('Something went wrong in database');
+        addToast({
+          text: 'Something went wrong in database',
+          type: 'danger'
+        })
+      })
   }, [isAdmin, searchText]);
 
   useEffect(() => {
@@ -71,7 +80,13 @@ const BlogList = ({ isAdmin }) => {
           type: 'success'
         });
       })
-      .catch(error => {console.log(error);})
+      .catch(error => {
+        console.log(error);
+        addToast({
+          text: 'The blog could not be deleted.',
+          type: 'dnager'
+        });
+      })
   }
 
   if(loading) {
@@ -105,6 +120,10 @@ const BlogList = ({ isAdmin }) => {
       setCurrentPage(1);
       getPosts(1);
     }
+  }
+
+  if(error) {
+    return <div>{error}</div>
   }
 
   return (

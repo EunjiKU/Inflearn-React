@@ -7,12 +7,20 @@ import NavBar from './components/NavBar';
 import routes from './routes';
 import Toast from "./components/Toast";
 import useToast from './hooks/toast';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import ProtectedRoute from './ProtectedRoute';
+import { useEffect } from "react";
+import { login } from './store/authSlice';
 
 function App() {
   const toasts = useSelector(state => state.toast.toasts);
   const { deleteToast } = useToast();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if(localStorage.getItem('isLoggedIn')) {
+      dispatch(login());
+    } 
+  }, []);
   return (
     <Router>
     <NavBar />

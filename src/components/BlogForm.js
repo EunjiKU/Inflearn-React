@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useHistory, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import useToast from '../hooks/toast';
+import LoadingSpinner from "../components/LoadingSpinner";
 
-const BlogForm = ({ editing, addToast }) => {
+const BlogForm = ({ editing }) => {
   const history = useHistory();
   const { id } = useParams();
 
@@ -15,6 +17,9 @@ const BlogForm = ({ editing, addToast }) => {
   const [originPublish, setOriginPublish] = useState('');
   const [titleError, setTitleError] = useState(false);
   const [bodyError, setBodyError] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const { addToast } = useToast();
 
   useEffect(() => {
     if(editing) {
@@ -26,8 +31,19 @@ const BlogForm = ({ editing, addToast }) => {
           setOriginBody(response.data.body);
           setPublish(response.data.publish)
           setOriginPublish(response.data.publish)
+          setLoading(false);
         })
-        .catch(error => console.log(error))
+        .catch(error => {
+          console.log(error);
+          setError('something went wrong in db');
+          addToast({
+            type: 'danger',
+            text: 'something went wrong in db'
+          });
+          setLoading(false);
+        })
+    } else {
+      setLoading(false);
     }
   }, [id, editing]);
 
@@ -73,7 +89,13 @@ const BlogForm = ({ editing, addToast }) => {
         .then((response) => {
             history.push(`/blogs/${id}`);
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            console.log(error)
+            addToast({
+              type: 'danger',
+              text: 'We could not update blog'
+            });
+          });
       } else {
         axios.post("http://localhost:3001/posts", {
           title: title,
@@ -88,7 +110,13 @@ const BlogForm = ({ editing, addToast }) => {
             });
             history.push("/admin");
           })
-          .catch(error => console.log(error));
+          .catch(error => {
+            console.log(error);
+            addToast({
+              type: 'danger',
+              text: 'We could not create blog'
+            });
+          });
       }
     }
   }
@@ -96,6 +124,14 @@ const BlogForm = ({ editing, addToast }) => {
   const onChangePublish = (e) => {
     console.log(e.target.checked);
     setPublish(e.target.checked)
+  }
+
+  if(loading) {
+    return <LoadingSpinner />
+  }
+
+  if(error) {
+    return (<div>{error}</div>)
   }
 
   return (

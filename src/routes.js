@@ -5,6 +5,7 @@ import CreatePage from './pages/CreatePage';
 import EditPage from './pages/EditPage';
 import ShowPage from './pages/ShowPage';
 import AdminPage from './pages/AdminPage';
+import NotFoundPage from './pages/NotFoundPage';
 
 const routes = [
   {
@@ -34,6 +35,10 @@ const routes = [
     path: '/blogs/:id',
     component: ShowPage
   },
+  {
+    path: '*',
+    component: NotFoundPage
+  }
 ]
 
 export default routes;
